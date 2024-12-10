@@ -32,7 +32,7 @@ jobs:
             return approvedReviews.length;
 
       - name: Send Slack Notification
-        if: steps.check_approvals.outputs.result == '2'
+        if: steps.check_approvals.outputs.result == '1'
         run: |
           curl -X POST --data-urlencode "payload={\
             \"channel\": \"#common-sense-build-deploy-notifications\", \
