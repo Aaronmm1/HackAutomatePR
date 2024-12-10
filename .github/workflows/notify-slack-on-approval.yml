@@ -9,14 +9,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send Test Slack Notification
-        run: |
-          curl -X POST --data-urlencode "payload={\
-            \"channel\": \"#common-sense-build-deploy-notifications\", \
-            \"username\": \"AaronsBot\", \
-            \"text\": \"This is a test message to verify Slack notifications are working.\", \
-            \"icon_emoji\": \":robot_face:\" \
-          }" ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Check for 2 approvals
         id: check_approvals
         uses: actions/github-script@v6
@@ -37,6 +29,6 @@ jobs:
           curl -X POST --data-urlencode "payload={\
             \"channel\": \"#common-sense-build-deploy-notifications\", \
             \"username\": \"AaronsBot\", \
-            \"text\": \"The PR #${{ github.event.pull_request.number }} has received 2 approvals!\", \
-            \"icon_emoji\": \":tada:\" \
+            \"text\": \"The PR -${{ github.event.pull_request.title }}- has received 2 approvals!\", \
+            \"icon_emoji\": \":ghostbusters:\" \
           }" ${{ secrets.SLACK_WEBHOOK_URL }}
