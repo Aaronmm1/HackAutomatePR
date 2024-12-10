@@ -12,8 +12,8 @@ jobs:
       - name: Send Test Slack Notification
         run: |
           curl -X POST --data-urlencode "payload={\
-            \"channel\": \"#your-channel\", \
-            \"username\": \"webhookbot\", \
+            \"channel\": \"#common-sense-build-deploy-notifications\", \
+            \"username\": \"AaronsBot\", \
             \"text\": \"This is a test message to verify Slack notifications are working.\", \
             \"icon_emoji\": \":robot_face:\" \
           }" ${{ secrets.SLACK_WEBHOOK_URL }}
