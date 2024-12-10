@@ -35,8 +35,8 @@ jobs:
         if: steps.check_approvals.outputs.result == '2'
         run: |
           curl -X POST --data-urlencode "payload={\
-            \"channel\": \"#your-channel\", \
-            \"username\": \"webhookbot\", \
+            \"channel\": \"#common-sense-build-deploy-notifications\", \
+            \"username\": \"AaronsBot\", \
             \"text\": \"The PR #${{ github.event.pull_request.number }} has received 2 approvals!\", \
             \"icon_emoji\": \":tada:\" \
           }" ${{ secrets.SLACK_WEBHOOK_URL }}
