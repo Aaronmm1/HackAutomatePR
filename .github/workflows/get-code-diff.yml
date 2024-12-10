@@ -1,0 +1,21 @@
+name: Save PR Diff
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  save-diff:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get code diff
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          git diff origin/${{ github.event.pull_request.base.ref }} > code_diff.txt
+
+      - name: Display diff
+        run: cat code_diff.txt
