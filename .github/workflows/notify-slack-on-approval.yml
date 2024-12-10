@@ -1,0 +1,42 @@
+name: Notify Slack on PR Approval
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Test Slack Notification
+        run: |
+          curl -X POST --data-urlencode "payload={\
+            \"channel\": \"#your-channel\", \
+            \"username\": \"webhookbot\", \
+            \"text\": \"This is a test message to verify Slack notifications are working.\", \
+            \"icon_emoji\": \":robot_face:\" \
+          }" ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Check for 2 approvals
+        id: check_approvals
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: reviews } = await github.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+
+            const approvedReviews = reviews.filter(review => review.state === 'APPROVED');
+            return approvedReviews.length;
+
+      - name: Send Slack Notification
+        if: steps.check_approvals.outputs.result == '2'
+        run: |
+          curl -X POST --data-urlencode "payload={\
+            \"channel\": \"#your-channel\", \
+            \"username\": \"webhookbot\", \
+            \"text\": \"The PR #${{ github.event.pull_request.number }} has received 2 approvals!\", \
+            \"icon_emoji\": \":tada:\" \
+          }" ${{ secrets.SLACK_WEBHOOK_URL }}
